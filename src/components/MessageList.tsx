@@ -1,19 +1,41 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { getMessages } from '@/actions/actions';
 import type { Message } from '@/types';
-import { MessageItem } from './MessageItem';
+import { MessageGroup } from './MessageGroup';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Terminal } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { startOfMinute } from 'date-fns';
 
 interface MessageListProps {
   roomId: string;
 }
+
+const groupMessagesByMinute = (messages: Message[]): Message[][] => {
+  if (!messages || messages.length === 0) {
+    return [];
+  }
+
+  const groups: { [key: string]: Message[] } = {};
+
+  messages.forEach((message) => {
+    const messageDate = new Date(message.createdAt);
+    const minuteKey = startOfMinute(messageDate).toISOString();
+
+    if (!groups[minuteKey]) {
+      groups[minuteKey] = [];
+    }
+    groups[minuteKey].push(message);
+  });
+
+  return Object.values(groups);
+};
+
 
 export function MessageList({ roomId }: MessageListProps) {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -21,6 +43,8 @@ export function MessageList({ roomId }: MessageListProps) {
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
   const scrollViewportRef = useRef<HTMLDivElement>(null);
+
+  const messageGroups = useMemo(() => groupMessagesByMinute(messages), [messages]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -71,9 +95,13 @@ export function MessageList({ roomId }: MessageListProps) {
   
   useEffect(() => {
     if (scrollViewportRef.current) {
-      scrollViewportRef.current.scrollTo({ top: scrollViewportRef.current.scrollHeight, behavior: 'smooth' });
+        setTimeout(() => {
+             if (scrollViewportRef.current) {
+                scrollViewportRef.current.scrollTo({ top: scrollViewportRef.current.scrollHeight, behavior: 'smooth' });
+             }
+        }, 100);
     }
-  }, [messages]);
+  }, [messageGroups]);
 
   const renderContent = () => {
     if (isLoading) {
@@ -101,7 +129,7 @@ export function MessageList({ roomId }: MessageListProps) {
       );
     }
     
-    if (messages.length === 0) {
+    if (messageGroups.length === 0) {
         return (
              <Alert>
                 <Terminal className="h-4 w-4" />
@@ -113,8 +141,8 @@ export function MessageList({ roomId }: MessageListProps) {
         )
     }
 
-    return messages.map((msg, index) => (
-      <MessageItem key={index} message={msg} />
+    return messageGroups.map((group, index) => (
+      <MessageGroup key={index} messages={group} />
     ));
   };
 
