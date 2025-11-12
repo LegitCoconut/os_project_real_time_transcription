@@ -7,7 +7,8 @@ const DB_NAME = process.env.DB_NAME || 'echovault';
 
 export async function POST(request: Request) {
   try {
-    const { room_id, message } = await request.json();
+    const body = await request.json();
+    const { room_id, message, malayalam, tamil, telugu } = body;
 
     if (!room_id || typeof room_id !== 'string' || !/^\d{6}$/.test(room_id)) {
       return NextResponse.json({ error: 'Invalid room_id provided. Must be a 6-digit string.' }, { status: 400 });
@@ -22,11 +23,13 @@ export async function POST(request: Request) {
     const collection = db.collection(room_id);
 
     // This ensures the collection is created if it doesn't exist
-    // by creating an index. A simple insert also works but this is more explicit.
     await collection.createIndex({ createdAt: 1 });
 
-    const newMessage = {
+    const newMessage: Omit<Message, '_id'> = {
       text: message,
+      malayalam: malayalam || '',
+      tamil: tamil || '',
+      telugu: telugu || '',
       createdAt: new Date(),
     };
 

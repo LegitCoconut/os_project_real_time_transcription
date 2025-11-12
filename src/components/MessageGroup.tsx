@@ -5,22 +5,39 @@ import { format } from 'date-fns';
 import { Card, CardContent } from '@/components/ui/card';
 import { useEffect, useState } from 'react';
 
+type Language = 'english' | 'malayalam' | 'tamil' | 'telugu';
+
 interface MessageGroupProps {
   messages: Message[];
+  language: Language;
 }
 
-export function MessageGroup({ messages }: MessageGroupProps) {
+export function MessageGroup({ messages, language }: MessageGroupProps) {
     const [formattedDate, setFormattedDate] = useState('');
 
     useEffect(() => {
         if (messages.length > 0) {
-            // All messages in the group are from the same minute, so we can use the first one.
             setFormattedDate(format(new Date(messages[0].createdAt), "MMM d, yyyy 'at' h:mm a"));
         }
     }, [messages]);
 
     if (messages.length === 0) {
         return null;
+    }
+    
+    const getMessageText = (message: Message, lang: Language): string => {
+        switch(lang) {
+            case 'english':
+                return message.text;
+            case 'malayalam':
+                return message.malayalam || 'Translation not available';
+            case 'tamil':
+                return message.tamil || 'Translation not available';
+            case 'telugu':
+                return message.telugu || 'Translation not available';
+            default:
+                return message.text;
+        }
     }
 
     return (
@@ -29,7 +46,7 @@ export function MessageGroup({ messages }: MessageGroupProps) {
                 <CardContent className="p-3 space-y-2">
                     {messages.map((message, index) => (
                         <p key={index} className="text-foreground">
-                            {message.text}
+                            {getMessageText(message, language)}
                         </p>
                     ))}
                 </CardContent>
