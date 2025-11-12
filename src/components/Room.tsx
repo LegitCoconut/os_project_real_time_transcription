@@ -1,11 +1,15 @@
 'use client';
 
 import React, { useState, useTransition } from 'react';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MessageList } from './MessageList';
 import { Loader2, ArrowRight } from 'lucide-react';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
 
 export function Room() {
   const [roomIdInput, setRoomIdInput] = useState('');
@@ -47,27 +51,32 @@ export function Room() {
         <CardTitle className="text-center text-2xl font-headline">Join a Room</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-4 items-center">
           <div className="space-y-2">
             <label htmlFor="roomId" className="text-sm font-medium text-muted-foreground">
               Enter 6-digit Room ID
             </label>
-            <Input
-              id="roomId"
-              type="text"
-              placeholder="e.g., 123456"
+            <InputOTP 
+              maxLength={6} 
               value={roomIdInput}
-              onChange={(e) => setRoomIdInput(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
-              maxLength={6}
-              className="text-center text-lg tracking-widest"
-              onKeyDown={(e) => e.key === 'Enter' && handleJoinRoom()}
-            />
-            {error && <p className="text-sm text-destructive">{error}</p>}
+              onChange={(value) => setRoomIdInput(value)}
+              onComplete={handleJoinRoom}
+            >
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+                <InputOTPSlot index={3} />
+                <InputOTPSlot index={4} />
+                <InputOTPSlot index={5} />
+              </InputOTPGroup>
+            </InputOTP>
+            {error && <p className="text-sm text-destructive mt-2">{error}</p>}
           </div>
           <Button
             onClick={handleJoinRoom}
             disabled={isPending || roomIdInput.length !== 6}
-            className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+            className="w-full max-w-xs bg-accent text-accent-foreground hover:bg-accent/90"
           >
             {isPending ? (
               <Loader2 className="animate-spin" />
