@@ -37,7 +37,7 @@ const groupMessagesByMinute = (messages: Message[]): Message[][] => {
   return Object.values(groups);
 };
 
-type Language = 'english' | 'malayalam' | 'tamil' | 'telugu';
+type Language = 'english' | 'hindi';
 
 export function MessageList({ roomId }: MessageListProps) {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -158,11 +158,9 @@ export function MessageList({ roomId }: MessageListProps) {
       </CardHeader>
       <CardContent className="flex-grow min-h-0 flex flex-col">
          <Tabs defaultValue="english" onValueChange={(value) => setActiveTab(value as Language)} className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
+            <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="english">English</TabsTrigger>
-                <TabsTrigger value="malayalam">Malayalam</TabsTrigger>
-                <TabsTrigger value="tamil">Tamil</TabsTrigger>
-                <TabsTrigger value="telugu">Telugu</TabsTrigger>
+                <TabsTrigger value="hindi">Hindi</TabsTrigger>
             </TabsList>
          </Tabs>
          <ScrollArea className="h-full pr-4 mt-4" viewportRef={scrollViewportRef}>

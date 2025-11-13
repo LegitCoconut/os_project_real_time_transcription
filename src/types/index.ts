@@ -2,9 +2,7 @@ import type { ObjectId } from 'mongodb';
 
 export interface Message {
   _id: ObjectId;
-  text: string;
-  malayalam?: string;
-  tamil?: string;
-  telugu?: string;
+  message_en: string;
+  message_hi?: string;
   createdAt: Date;
 }

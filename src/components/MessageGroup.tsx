@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { Card, CardContent } from '@/components/ui/card';
 import { useEffect, useState } from 'react';
 
-type Language = 'english' | 'malayalam' | 'tamil' | 'telugu';
+type Language = 'english' | 'hindi';
 
 interface MessageGroupProps {
   messages: Message[];
@@ -28,15 +28,11 @@ export function MessageGroup({ messages, language }: MessageGroupProps) {
     const getMessageText = (message: Message, lang: Language): string => {
         switch(lang) {
             case 'english':
-                return message.text;
-            case 'malayalam':
-                return message.malayalam || 'Translation not available';
-            case 'tamil':
-                return message.tamil || 'Translation not available';
-            case 'telugu':
-                return message.telugu || 'Translation not available';
+                return message.message_en;
+            case 'hindi':
+                return message.message_hi || 'Translation not available';
             default:
-                return message.text;
+                return message.message_en;
         }
     }
 
