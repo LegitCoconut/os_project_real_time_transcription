@@ -47,24 +47,24 @@ export function MessageList({ roomId }: MessageListProps) {
 
   const messageGroups = useMemo(() => groupMessagesByMinute(messages), [messages]);
 
-  const fetchMessages = useCallback(() => {
-    return getMessages(roomId)
-      .then((newMessages) => {
-        setMessages(newMessages);
-      })
-      .catch(() => {
-        setError('Failed to load messages.');
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Could not fetch messages for this room.",
-        });
+  const fetchMessages = useCallback(async () => {
+    try {
+      const newMessages = await getMessages(roomId);
+      setMessages(newMessages);
+    } catch (err) {
+      const errorMessage = 'Failed to load messages.';
+      setError(errorMessage);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Could not fetch messages for this room.",
       });
+    }
   }, [roomId, toast]);
 
   const handleRefresh = () => {
     startTransition(() => {
-        fetchMessages();
+      fetchMessages();
     });
   }
 
@@ -74,7 +74,7 @@ export function MessageList({ roomId }: MessageListProps) {
     setMessages([]);
 
     fetchMessages().finally(() => {
-        setIsLoading(false);
+      setIsLoading(false);
     });
 
     const eventSource = new EventSource(`/api/stream/${roomId}`);
@@ -89,13 +89,13 @@ export function MessageList({ roomId }: MessageListProps) {
     };
     
     eventSource.onerror = () => {
-        console.error("SSE connection error. The connection will be closed.");
-        toast({
-          variant: "destructive",
-          title: "Connection Lost",
-          description: "Lost connection to the server. Please try re-joining the room.",
-        });
-        eventSource.close();
+      console.error("SSE connection error. The connection will be closed.");
+      toast({
+        variant: "destructive",
+        title: "Connection Lost",
+        description: "Lost connection to the server. Please try re-joining the room.",
+      });
+      eventSource.close();
     }
 
     return () => {
