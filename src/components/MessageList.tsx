@@ -33,7 +33,7 @@ const groupMessagesByMinute = (messages: Message[]): Message[][] => {
     groups[minuteKey].push(message);
   });
 
-  return Object.values(groups);
+  return Object.values(groups).filter(group => group.length > 0);
 };
 
 export function MessageList({ roomId }: MessageListProps) {
@@ -93,13 +93,14 @@ export function MessageList({ roomId }: MessageListProps) {
   }, [roomId, toast]);
   
   useEffect(() => {
-    if (scrollViewportRef.current) {
-        setTimeout(() => {
-             if (scrollViewportRef.current) {
-                scrollViewportRef.current.scrollTo({ top: scrollViewportRef.current.scrollHeight, behavior: 'smooth' });
-             }
-        }, 100);
-    }
+    const scrollToBottom = () => {
+        if (scrollViewportRef.current) {
+            scrollViewportRef.current.scrollTo({ top: scrollViewportRef.current.scrollHeight, behavior: 'smooth' });
+        }
+    };
+    // A short delay ensures the DOM has updated before we try to scroll.
+    const timeoutId = setTimeout(scrollToBottom, 100);
+    return () => clearTimeout(timeoutId);
   }, [messageGroups]);
 
   const renderContent = () => {
