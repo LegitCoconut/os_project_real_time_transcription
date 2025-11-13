@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useTransition } from 'react';
+import React, { useState, useTransition, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MessageList } from './MessageList';
@@ -16,6 +16,19 @@ export function Room() {
   const [activeRoom, setActiveRoom] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (activeRoom) {
+      document.title = `Room: ${activeRoom}`;
+    } else {
+      document.title = 'EchoVault';
+    }
+
+    // Cleanup function to reset title when component unmounts or room changes
+    return () => {
+      document.title = 'EchoVault';
+    };
+  }, [activeRoom]);
 
   const handleJoinRoom = () => {
     if (!/^\d{6}$/.test(roomIdInput)) {
