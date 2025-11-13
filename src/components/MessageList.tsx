@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback, useTransition } from 'react';
 import { getMessages } from '@/actions/actions';
 import type { Message } from '@/types';
 import { MessageGroup } from './MessageGroup';
@@ -8,9 +8,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Terminal } from 'lucide-react';
+import { Terminal, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { startOfMinute } from 'date-fns';
+import { Button } from './ui/button';
 
 interface MessageListProps {
   roomId: string;
@@ -40,31 +41,41 @@ export function MessageList({ roomId }: MessageListProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
   const scrollViewportRef = useRef<HTMLDivElement>(null);
 
   const messageGroups = useMemo(() => groupMessagesByMinute(messages), [messages]);
+
+  const fetchMessages = useCallback(() => {
+    return getMessages(roomId)
+      .then((newMessages) => {
+        setMessages(newMessages);
+      })
+      .catch(() => {
+        setError('Failed to load messages.');
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Could not fetch messages for this room.",
+        });
+      });
+  }, [roomId, toast]);
+
+  const handleRefresh = () => {
+    startTransition(() => {
+        fetchMessages();
+    });
+  }
 
   useEffect(() => {
     setIsLoading(true);
     setError(null);
     setMessages([]);
 
-    getMessages(roomId)
-      .then((initialMessages) => {
-        setMessages(initialMessages);
-      })
-      .catch(() => {
-        setError('Failed to load initial messages.');
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description: "Could not fetch messages for this room.",
-        });
-      })
-      .finally(() => {
+    fetchMessages().finally(() => {
         setIsLoading(false);
-      });
+    });
 
     const eventSource = new EventSource(`/api/stream/${roomId}`);
 
@@ -90,7 +101,7 @@ export function MessageList({ roomId }: MessageListProps) {
     return () => {
       eventSource.close();
     };
-  }, [roomId, toast]);
+  }, [roomId, toast, fetchMessages]);
   
   useEffect(() => {
     const scrollToBottom = () => {
@@ -149,9 +160,15 @@ export function MessageList({ roomId }: MessageListProps) {
   return (
     <Card className="w-full h-[70vh] flex flex-col shadow-lg">
       <CardHeader>
-        <CardTitle className="font-headline">
-          Room Transcription: <span className="font-mono text-accent">{roomId}</span>
-        </CardTitle>
+        <div className="flex justify-between items-center">
+            <CardTitle className="font-headline">
+                Room Transcription: <span className="font-mono text-accent">{roomId}</span>
+            </CardTitle>
+            <Button variant="outline" size="icon" onClick={handleRefresh} disabled={isPending}>
+                <RefreshCw className={`h-4 w-4 ${isPending ? 'animate-spin' : ''}`} />
+                <span className="sr-only">Refresh Messages</span>
+            </Button>
+        </div>
       </CardHeader>
       <CardContent className="flex-grow min-h-0 flex flex-col">
          <ScrollArea className="h-full pr-4 mt-4" viewportRef={scrollViewportRef}>
