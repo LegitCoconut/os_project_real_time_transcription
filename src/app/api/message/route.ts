@@ -8,14 +8,14 @@ const DB_NAME = process.env.DB_NAME || 'echovault';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { room_id, message_en, message_hi } = body;
+    const { room_id, message } = body;
 
     if (!room_id || typeof room_id !== 'string' || !/^\d{6}$/.test(room_id)) {
       return NextResponse.json({ error: 'Invalid room_id provided. Must be a 6-digit string.' }, { status: 400 });
     }
 
-    if (!message_en || typeof message_en !== 'string') {
-      return NextResponse.json({ error: 'Invalid message_en provided.' }, { status: 400 });
+    if (!message || typeof message !== 'string') {
+      return NextResponse.json({ error: 'Invalid message provided.' }, { status: 400 });
     }
 
     const client = await clientPromise;
@@ -26,8 +26,7 @@ export async function POST(request: Request) {
     await collection.createIndex({ createdAt: 1 });
 
     const newMessage: Omit<Message, '_id'> = {
-      message_en: message_en,
-      message_hi: message_hi || '',
+      message: message,
       createdAt: new Date(),
     };
 

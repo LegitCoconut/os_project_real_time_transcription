@@ -8,7 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Terminal } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { startOfMinute } from 'date-fns';
@@ -37,15 +36,12 @@ const groupMessagesByMinute = (messages: Message[]): Message[][] => {
   return Object.values(groups);
 };
 
-type Language = 'english' | 'hindi';
-
 export function MessageList({ roomId }: MessageListProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
   const scrollViewportRef = useRef<HTMLDivElement>(null);
-  const [activeTab, setActiveTab] = useState<Language>('english');
 
   const messageGroups = useMemo(() => groupMessagesByMinute(messages), [messages]);
 
@@ -104,7 +100,7 @@ export function MessageList({ roomId }: MessageListProps) {
              }
         }, 100);
     }
-  }, [messageGroups, activeTab]);
+  }, [messageGroups]);
 
   const renderContent = () => {
     if (isLoading) {
@@ -145,7 +141,7 @@ export function MessageList({ roomId }: MessageListProps) {
     }
 
     return messageGroups.map((group, index) => (
-      <MessageGroup key={index} messages={group} language={activeTab} />
+      <MessageGroup key={index} messages={group} />
     ));
   };
 
@@ -157,12 +153,6 @@ export function MessageList({ roomId }: MessageListProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-grow min-h-0 flex flex-col">
-         <Tabs defaultValue="english" onValueChange={(value) => setActiveTab(value as Language)} className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="english">English</TabsTrigger>
-                <TabsTrigger value="hindi">Hindi</TabsTrigger>
-            </TabsList>
-         </Tabs>
          <ScrollArea className="h-full pr-4 mt-4" viewportRef={scrollViewportRef}>
           <div className="flex flex-col gap-4">
             {renderContent()}

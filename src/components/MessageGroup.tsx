@@ -5,14 +5,11 @@ import { format } from 'date-fns';
 import { Card, CardContent } from '@/components/ui/card';
 import { useEffect, useState } from 'react';
 
-type Language = 'english' | 'hindi';
-
 interface MessageGroupProps {
   messages: Message[];
-  language: Language;
 }
 
-export function MessageGroup({ messages, language }: MessageGroupProps) {
+export function MessageGroup({ messages }: MessageGroupProps) {
     const [formattedDate, setFormattedDate] = useState('');
 
     useEffect(() => {
@@ -25,24 +22,13 @@ export function MessageGroup({ messages, language }: MessageGroupProps) {
         return null;
     }
     
-    const getMessageText = (message: Message, lang: Language): string => {
-        switch(lang) {
-            case 'english':
-                return message.message_en;
-            case 'hindi':
-                return message.message_hi || 'Translation not available';
-            default:
-                return message.message_en;
-        }
-    }
-
     return (
         <div className="flex flex-col items-start animate-in fade-in-50 slide-in-from-bottom-2 duration-500">
             <Card className="max-w-2xl bg-card/80 dark:bg-card/50">
                 <CardContent className="p-3 space-y-2">
                     {messages.map((message, index) => (
                         <p key={index} className="text-foreground">
-                            {getMessageText(message, language)}
+                            {message.message}
                         </p>
                     ))}
                 </CardContent>
