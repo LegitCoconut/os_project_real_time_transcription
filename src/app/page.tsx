@@ -79,29 +79,29 @@ export default function Home() {
             </a>
           </div>
 
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <Link href="#home" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
-                  <HomeIcon size={16} />
-                  Home
+          <nav className="flex items-center gap-4 md:gap-6 text-sm font-medium">
+            <Link href="#home" title="Home" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                  <HomeIcon size={18} />
+                  <span className="hidden md:inline">Home</span>
               </Link>
-            <Link href="#authors" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
-                <Users size={16} />
-                Authors
+            <Link href="#authors" title="Authors" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                <Users size={18} />
+                <span className="hidden md:inline">Authors</span>
             </Link>
-            <Link href="#features" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
-                <Blocks size={16} />
-                Features
+            <Link href="#features" title="Features" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                <Blocks size={18} />
+                <span className="hidden md:inline">Features</span>
             </Link>
-            <Link href="https://github.com/LegitCoconut/os_project_real_time_transcription" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
-                <Github size={16} />
-                Codebase
+            <Link href="https://github.com/LegitCoconut/os_project_real_time_transcription" title="Codebase" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                <Github size={18} />
+                <span className="hidden md:inline">Codebase</span>
             </Link>
           </nav>
           
           <div className="flex items-center gap-2">
             <Link href="https://malabarmatrix.site" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-                <Image src="/malabar-matrix.png" alt="Malabar Matrix Logo" width={24} height={24} className="rounded-sm" />
-                Malabar Matrix
+                <Image src="/malabar_matrix-min.png" alt="Malabar Matrix Logo" width={32} height={32} className="rounded-sm" />
+                <span className="hidden md:inline">Malabar Matrix</span>
             </Link>
           </div>
         </div>
