@@ -2,6 +2,17 @@
 
 EchoVault is a real-time transcription service that captures audio from a user's microphone, transcribes it using OpenAI's Whisper model, and displays the text live on a web interface. This project demonstrates a powerful integration between a local Python backend for audio processing and a modern web application for real-time data display.
 
+## How It Works
+
+The system is split into two main components:
+
+1.  **The Backend (`backend_Server/final.py`)**: A Python script that runs on the user's local machine. It captures microphone audio, breaks it into chunks, transcribes each chunk using the Whisper AI model, and sends the resulting text to the frontend's API endpoint.
+2.  **The Frontend (Next.js App)**: A web application that receives the transcribed text. When a message is received, it's stored in a MongoDB database and simultaneously broadcast to all clients connected to the same room using Server-Sent Events (SSE). This allows for a live, real-time feed of the transcription.
+
+## Project Setup
+
+For detailed instructions on how to set up and run both the backend server and the frontend web application, please refer to the [Setup Guide](./setup.md).
+
 ## Core Features
 
 ### Backend (Python Script)
@@ -19,13 +30,6 @@ EchoVault is a real-time transcription service that captures audio from a user's
 - **Message Grouping**: Automatically groups messages sent within the same minute, improving readability and providing better context.
 - **Modern & Responsive UI**: Built with Next.js, React, and ShadCN UI components for a clean, intuitive, and mobile-friendly user experience.
 - **Dark Mode**: Features a sleek dark theme for comfortable viewing in low-light environments.
-
-## How It Works
-
-The system is split into two main components:
-
-1.  **The Backend (`backend_Server/final.py`)**: A Python script that runs on the user's local machine. It captures microphone audio, breaks it into chunks, transcribes each chunk using the Whisper AI model, and sends the resulting text to the frontend's API endpoint.
-2.  **The Frontend (Next.js App)**: A web application that receives the transcribed text. When a message is received, it's stored in a MongoDB database and simultaneously broadcast to all clients connected to the same room using Server-Sent Events (SSE). This allows for a live, real-time feed of the transcription.
 
 ## Tech Stack
 
@@ -46,6 +50,18 @@ The system is split into two main components:
 - **Database**: MongoDB
 - **State Management**: React Hooks (`useState`, `useEffect`, `useTransition`)
 - **Deployment**: Configured for Firebase App Hosting.
+
+## Contributing
+
+We welcome contributions to EchoVault! If you'd like to help improve the project, please follow these steps:
+
+1.  **Fork the repository** on GitHub.
+2.  **Create a new branch** for your feature or bug fix (`git checkout -b feature/your-feature-name`).
+3.  **Make your changes** and commit them with a clear and descriptive message.
+4.  **Push your branch** to your forked repository.
+5.  **Open a Pull Request** to the main project repository.
+
+We'll review your contribution and merge it if it aligns with the project's goals. Thank you for your interest in making EchoVault better!
 
 ## Project Authors
 
