@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'EchoVault',
-  description: 'Real time transcription and translation service',
+  description: 'A real-time transcription service made using open source tools and services.',
 };
 
 export default function RootLayout({
