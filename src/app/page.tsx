@@ -110,7 +110,7 @@ export default function Home() {
         <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto min-h-[calc(100vh-3.5rem)] p-4 sm:p-6 md:p-8">
           <header className="text-center mb-12">
             <h1 className="text-4xl sm:text-5xl font-bold text-primary font-headline">EchoVault</h1>
-            <p className="text-muted-foreground mt-2">Real-time transcription and translation service</p>
+            <p className="text-muted-foreground mt-2">A real-time transcription service made using open source tools and services.</p>
           </header>
 
           <div className="mb-12 w-full">
