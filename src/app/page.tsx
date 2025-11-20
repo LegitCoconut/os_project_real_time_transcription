@@ -1,15 +1,27 @@
 import { Room } from '@/components/Room';
 import { Toaster } from "@/components/ui/toaster";
-import { MessageSquare } from 'lucide-react';
+import Image from 'next/image';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function Home() {
+  const logoImage = PlaceHolderImages.find(p => p.id === 'echovault-logo');
+
   return (
     <>
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center">
           <div className="mr-4 flex items-center">
             <a className="flex items-center space-x-2" href="/">
-              <MessageSquare className="h-6 w-6 text-primary" />
+              {logoImage && (
+                <Image 
+                  src={logoImage.imageUrl} 
+                  alt="EchoVault Logo" 
+                  width={32} 
+                  height={32} 
+                  className="rounded-sm"
+                  data-ai-hint={logoImage.imageHint}
+                />
+              )}
               <span className="font-bold">
                 EchoVault
               </span>
