@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 import { Mic, Cpu, Radio, Webhook, Settings, MessageSquare, Clock } from 'lucide-react';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function Home() {
 
@@ -54,6 +55,8 @@ export default function Home() {
       badge: "Feature"
     }
   ];
+
+  const posterImage = PlaceHolderImages.find(img => img.id === 'project-poster');
 
 
   return (
@@ -131,6 +134,27 @@ export default function Home() {
                 </Card>
               </div>
             </section>
+            
+            <section>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-2xl text-center">Project Poster</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    {posterImage && (
+                       <Image
+                        src={posterImage.imageUrl}
+                        alt={posterImage.description}
+                        width={1280}
+                        height={720}
+                        className="rounded-lg shadow-md"
+                        data-ai-hint={posterImage.imageHint}
+                      />
+                    )}
+                  </CardContent>
+                </Card>
+            </section>
+
           </div>
         </div>
         <Toaster />
