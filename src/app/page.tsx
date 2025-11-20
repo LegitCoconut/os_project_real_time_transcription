@@ -3,8 +3,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
-import { Mic, Cpu, Radio, Webhook, Settings, MessageSquare, Clock } from 'lucide-react';
+import { Mic, Cpu, Radio, Webhook, Settings, MessageSquare, Clock, Users, Github, FileText } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import Link from 'next/link';
 
 export default function Home() {
 
@@ -92,6 +93,38 @@ export default function Home() {
         </div>
 
         <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 md:p-8 space-y-12">
+            <section>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-2xl text-center flex items-center justify-center gap-2">
+                    <Users />
+                    Project Authors
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6 text-center">
+                    <div className="space-y-2">
+                         <h3 className="font-semibold text-lg text-muted-foreground">Built By</h3>
+                         <div className="flex justify-center items-center gap-6">
+                             <Link href="https://github.com/legitcoconut" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-accent hover:underline">
+                                <Github size={16}/> Adithyan P
+                            </Link>
+                             <Link href="https://github.com/RohitAnilKumar" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-accent hover:underline">
+                                <Github size={16}/> Rohit Anil Kumar
+                            </Link>
+                         </div>
+                    </div>
+                     <div className="space-y-3">
+                        <Link href="https://github.com/LegitCoconut/os_project_real_time_transcription" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-accent hover:underline">
+                            <Github size={16}/> View Project on GitHub
+                        </Link>
+                         <Link href="/project_report.docx" download className="flex items-center justify-center gap-2 text-accent hover:underline">
+                            <FileText size={16}/> Download Project Report
+                        </Link>
+                    </div>
+                </CardContent>
+              </Card>
+            </section>
+
             <section>
               <h2 className="text-3xl font-bold text-center mb-8">Project Features</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
