@@ -79,18 +79,19 @@ export default function Home() {
           </div>
         </div>
       </header>
-      <main className="flex flex-col items-center justify-center min-h-[calc(100vh-3.5rem)] bg-background text-foreground p-4 sm:p-6 md:p-8">
-        <div className="w-full max-w-4xl mx-auto">
+      <main className="flex flex-col items-center justify-center bg-background text-foreground">
+        <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto min-h-[calc(100vh-3.5rem)] p-4 sm:p-6 md:p-8">
           <header className="text-center mb-12">
             <h1 className="text-4xl sm:text-5xl font-bold text-primary font-headline">EchoVault</h1>
             <p className="text-muted-foreground mt-2">Real-time transcription and translation service</p>
           </header>
 
-          <div className="mb-12">
+          <div className="mb-12 w-full">
             <Room />
           </div>
+        </div>
 
-          <div className="space-y-12">
+        <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 md:p-8 space-y-12">
             <section>
               <h2 className="text-3xl font-bold text-center mb-8">Project Features</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -143,8 +144,8 @@ export default function Home() {
                   <CardContent>
                     {posterImage && (
                        <Image
-                        src={posterImage.imageUrl}
-                        alt={posterImage.description}
+                        src={"/project_poster.png"}
+                        alt={"project poster!"}
                         width={1280}
                         height={720}
                         className="rounded-lg shadow-md"
@@ -154,8 +155,6 @@ export default function Home() {
                   </CardContent>
                 </Card>
             </section>
-
-          </div>
         </div>
         <Toaster />
       </main>
