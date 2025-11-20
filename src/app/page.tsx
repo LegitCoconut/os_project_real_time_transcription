@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
-import { Mic, Cpu, Radio, Webhook, Settings, MessageSquare, Clock, Users, Github, FileText } from 'lucide-react';
+import { Mic, Cpu, Radio, Webhook, Settings, MessageSquare, Clock, Users, Github, FileText, Blocks, Code } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 
@@ -64,7 +64,7 @@ export default function Home() {
     <>
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="w-[95%] md:w-[80%] mx-auto flex h-14 items-center">
-          <div className="mr-4 flex items-center">
+          <div className="mr-auto flex items-center">
             <a className="flex items-center space-x-2" href="/">
               <Image 
                 src="/EchoVault-min.png" 
@@ -78,6 +78,20 @@ export default function Home() {
               </span>
             </a>
           </div>
+          <nav className="flex items-center gap-4 text-sm font-medium">
+             <Link href="#authors" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                <Users size={16} />
+                Authors
+            </Link>
+             <Link href="#features" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                <Blocks size={16} />
+                Features
+            </Link>
+             <Link href="https://github.com/LegitCoconut/os_project_real_time_transcription" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+                <Code size={16} />
+                Codebase
+            </Link>
+          </nav>
         </div>
       </header>
       <main className="flex flex-col items-center justify-center bg-background text-foreground">
@@ -93,7 +107,7 @@ export default function Home() {
         </div>
 
         <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 md:p-8 space-y-12">
-            <section>
+            <section id="authors">
               <Card>
                 <CardHeader>
                   <CardTitle className="text-2xl text-center flex items-center justify-center gap-2">
@@ -125,7 +139,7 @@ export default function Home() {
               </Card>
             </section>
 
-            <section>
+            <section id="features">
               <h2 className="text-3xl font-bold text-center mb-8">Project Features</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <Card>
